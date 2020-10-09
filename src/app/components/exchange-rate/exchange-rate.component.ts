@@ -1,6 +1,6 @@
-import { ExchangeRateService } from './../../services/exchange-rate.service';
 import { Component, OnInit } from '@angular/core';
 import { ExchangeRate } from 'src/app/models/ExchangeRate';
+import { ExchangeRateService } from './../../services/exchange-rate.service';
 
 @Component({
   selector: 'app-exchange-rate',
@@ -12,6 +12,13 @@ export class ExchangeRateComponent implements OnInit {
   constructor(private exchangeRateService:ExchangeRateService) { }
 
   ngOnInit(): void {
+    this.latestExchangeRate = new ExchangeRate();
+
+    this.getLatestExchangeRate();
+   
+  }
+
+  getLatestExchangeRate(){
     this.exchangeRateService.getLatestExchangeRate().subscribe(latestExchangeRate => {
       console.log(latestExchangeRate);
       this.latestExchangeRate = latestExchangeRate;
