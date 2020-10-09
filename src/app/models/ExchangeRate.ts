@@ -1,7 +1,12 @@
 import { Type } from '@angular/compiler';
 
+
 export class ExchangeRate {
     base : string;
     date : string;
-    rates: {}
+    rates: Rate
+}
+
+class Rate {
+    [props:string]:number
 }
