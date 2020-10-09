@@ -1,7 +1,7 @@
-import { ExchangeRate } from './../models/ExchangeRate';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ExchangeRate } from './../models/ExchangeRate';
 
 const httpOptions = {
   headers: new HttpHeaders({
