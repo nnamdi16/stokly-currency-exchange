@@ -8,6 +8,11 @@ import { SelectedCurrenciesExchangeRateService } from './../../services/selected
   styleUrls: ['./selected-currencies-exchange-rate.component.css']
 })
 export class SelectedCurrenciesExchangeRateComponent implements OnInit {
+  symbols:string = '';
+
+  loading: boolean = false;
+  errorMessage:any;
+  currencyExchange:ExchangeRate;
   selectedCurrenciesExchangeRate:ExchangeRate;
 
   constructor(private selectedCurrenciesExchangeRateService:SelectedCurrenciesExchangeRateService) { }
@@ -17,11 +22,27 @@ export class SelectedCurrenciesExchangeRateComponent implements OnInit {
     this.getSelectedCurrenciesExchangeRateData();
   }
 
-  getSelectedCurrenciesExchangeRateData(){
-    this.selectedCurrenciesExchangeRateService.getSelectedCurrenciesExchangeRateData().subscribe(selectedCurrenciesExchangeRate => {
-      console.log(`Selected Currencies Exchange Rate`, selectedCurrenciesExchangeRate);
-      this.selectedCurrenciesExchangeRate = selectedCurrenciesExchangeRate;
-    });
+  public getSelectedCurrenciesExchangeRateData() {
+    this.loading = true;
+    this.errorMessage = '';
+    this.selectedCurrenciesExchangeRateService.getSelectedCurrenciesExchangeRateData(this.symbols)
+      .subscribe(
+        (selectedCurrenciesExchangeRate) => {
+          console.log('Response recieved');
+          this.selectedCurrenciesExchangeRate = selectedCurrenciesExchangeRate;
+          console.log(`Selected Currencies Exchange Rate`, selectedCurrenciesExchangeRate);
+        },
+        (error) => {
+          console.log('Request failed with error');
+          this.errorMessage = error;
+          this.loading = false;
+        },
+        () => {
+          console.log('Request Completed');
+          this.loading = false;
+        }
+      )
+      
   }
 
 }
