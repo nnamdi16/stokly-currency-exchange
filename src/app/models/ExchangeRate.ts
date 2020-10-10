@@ -5,6 +5,6 @@ export class ExchangeRate {
     rates: Rate
 }
 
-class Rate {
+export class Rate {
     [props:string]:number
 }
