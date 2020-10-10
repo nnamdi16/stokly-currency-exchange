@@ -20,7 +20,7 @@ export class ExchangeRateComponent implements OnInit {
 
   getLatestExchangeRate(){
     this.exchangeRateService.getLatestExchangeRate().subscribe(latestExchangeRate => {
-      console.log(latestExchangeRate);
+      console.log('Latest Exchange Rate',latestExchangeRate);
       this.latestExchangeRate = latestExchangeRate;
     });
   }
