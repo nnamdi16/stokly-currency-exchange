@@ -1,6 +1,5 @@
 import { HistoricalExchangeRate } from './../../models/HistoricalExchangeRate';
 import { Component, OnInit } from '@angular/core';
-import { ExchangeRate } from 'src/app/models/ExchangeRate';
 import { HistoricalExchangeRateService } from './../../services/historical-exchange-rate.service';
 
 @Component({
@@ -9,7 +8,7 @@ import { HistoricalExchangeRateService } from './../../services/historical-excha
   styleUrls: ['./historical-exchange-rate.component.css']
 })
 export class HistoricalExchangeRateComponent implements OnInit {
-  historicalExchangeRate : HistoricalExchangeRate
+  historicalExchangeRate : HistoricalExchangeRate;
 
   constructor(private historicalexchangeRateService:HistoricalExchangeRateService) { }
 
@@ -20,7 +19,7 @@ export class HistoricalExchangeRateComponent implements OnInit {
 
   getHistoricalExchangeRate(){
     this.historicalexchangeRateService.getHistoricalExchangeRate().subscribe(historicalExchangeRate => {
-      console.log(historicalExchangeRate);
+      console.log('Historical Exchange Rate',historicalExchangeRate);
       this.historicalExchangeRate = historicalExchangeRate;
     })
 
