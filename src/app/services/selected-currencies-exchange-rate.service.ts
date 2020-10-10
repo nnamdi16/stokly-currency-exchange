@@ -13,11 +13,16 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SelectedCurrenciesExchangeRateService {
-  exchangeRateUrl : string = 'https://api.exchangeratesapi.io/latest?symbols=USD,GBP';
+  baseUrl = 'https://api.exchangeratesapi.io/latest?symbols='
+
   constructor(private http:HttpClient) {}
 
-   //Get selected currencies exchange rate
-   getSelectedCurrenciesExchangeRateData():Observable<ExchangeRate>{
-    return this.http.get<ExchangeRate>(this.exchangeRateUrl);
+  getSelectedCurrenciesExchangeRateData(symbols:string):Observable<ExchangeRate> {
+    console.log(symbols);
+    let currencyArray = symbols.split(',')
+    console.log(currencyArray);
+    let currencies = currencyArray.join();
+    console.log(currencies);
+    return this.http.get<ExchangeRate>(this.baseUrl + currencies);
   }
 }
