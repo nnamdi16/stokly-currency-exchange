@@ -4,11 +4,13 @@ import {HttpClientModule} from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ExchangeRateComponent } from './components/exchange-rate/exchange-rate.component';
+import { HistoricalExchangeRateComponent } from './components/historical-exchange-rate/historical-exchange-rate.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExchangeRateComponent
+    ExchangeRateComponent,
+    HistoricalExchangeRateComponent
   ],
   imports: [
     BrowserModule,
