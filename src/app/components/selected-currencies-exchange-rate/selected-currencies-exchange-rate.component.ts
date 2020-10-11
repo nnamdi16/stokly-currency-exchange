@@ -19,7 +19,6 @@ export class SelectedCurrenciesExchangeRateComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedCurrenciesExchangeRate = new ExchangeRate();
-    this.getSelectedCurrenciesExchangeRateData();
   }
 
   public getSelectedCurrenciesExchangeRateData() {
