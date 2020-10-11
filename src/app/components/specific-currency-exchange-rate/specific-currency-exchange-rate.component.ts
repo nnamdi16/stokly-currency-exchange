@@ -1,6 +1,6 @@
-import { SpecificCurrencyExchangeRateService } from './../../services/specific-currency-exchange-rate.service';
 import { Component, OnInit } from '@angular/core';
 import { ExchangeRate } from 'src/app/models/ExchangeRate';
+import { SpecificCurrencyExchangeRateService } from './../../services/specific-currency-exchange-rate.service';
 
 @Component({
   selector: 'app-specific-currency-exchange-rate',
