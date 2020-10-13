@@ -234,14 +234,15 @@ export class ExchangeRateComponent implements OnInit {
 
   }
 
-  getSpecificDaysHistoricalData(){
+  getSpecificDaysHistoricalData(event:string){
+    this.date = this.datePipe.transform(event,'yyyy-MM-dd');
     this.loading = true;
     this.errorMessage = new Error();
     this.exchangeRateService.getSpecificDaysHistoricalData(this.date)
       .subscribe(
         specificDateHistoricalExchangeRate => {
         console.log(`Specific Date Historical Data`, specificDateHistoricalExchangeRate);
-        this.historicalExchangeRate = specificDateHistoricalExchangeRate;
+        this.latestExchangeRate = specificDateHistoricalExchangeRate;
         
     },
       (error) => {
