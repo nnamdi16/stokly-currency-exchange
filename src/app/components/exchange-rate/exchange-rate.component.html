@@ -89,7 +89,14 @@
     
          <ng-container *ngIf="flag === 'historicalExchangeRate'" >
             <div class="row mt-5">
-                <div class="form-group col-4">
+                <div class="form-group col-3">
+                    <label for="inputState">Base Currency:</label>
+                    <select id="inputState" class="form-control" [(ngModel)]="baseCurrency">
+                      <option selected>Choose...</option>
+                      <option *ngFor="let item of countryCode " [value]="item">{{item}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-3">
                     <label for="usr">Start Date:</label>
                     <input type="text"
                     placeholder="Datepicker"
@@ -99,7 +106,7 @@
                     [(ngModel)] ="bsInlineRangeValue"
                     name="startDate">
                 </div>
-                <div class="form-group col-4">
+                <div class="form-group col-3">
                     <label for="endDate">End Date:</label>
                     <input type="text"
                        placeholder="Datepicker"
@@ -109,8 +116,8 @@
                        [(ngModel)] ="bsEndValue"
                        name="endDate">
                 </div>
-               <div class="form-group col-4 align-self-end">
-                    <button class="btn btn-primary" type="submit" (click) ="getHistoricalExchangeRate()">Submit</button>
+               <div class="form-group col-3 align-self-end">
+                    <button class="btn btn-primary" type="submit" (click) ="baseCurrency === 'EUR'? getHistoricalExchangeRate():getOtherCurrencyExchangeRateConversion()">Submit</button>
                </div>
             </div>
     
