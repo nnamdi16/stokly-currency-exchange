@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { ExchangeRateComponent } from './components/exchange-rate/exchange-rate.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
     DatepickerModule,
     ReactiveFormsModule
     
