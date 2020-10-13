@@ -2,30 +2,52 @@
     <app-navbar (menuItem)="getMenuItem($event)" ></app-navbar>
    
         <ng-container *ngIf="flag ==='latestExchangeRate'">
-            <div class="container mt-5">
-                <div class="row">
-                        <div class="card col-3 offset-1 mb-5" style="width: 18rem;">
-                            <div class='currency-flag mt-2 currency-flag-eur currency-flag-xl'></div>
-                            <div class="card-body">
-                              <h5 class="card-title">Base Currency</h5>
-                              <p class="card-text">EUR</p>
-                            </div>
-                          </div>
-             
+          <div>
+            <div class="row">
+                <div class="form-group col-4 offset-1 mt-4 pl-0">
+                    <label for="inputState">Base Currency:</label>
+                    <select id="inputState" class="form-control" [(ngModel)]="baseCurrency">
+                      <option selected>Choose...</option>
+                      <option *ngFor="let item of countryCode " [value]="item">{{item}}</option>
+                    </select>
                 </div>
-            </div>
-            <div class="container mt-5">
-                <div class="row">
-                        <div class="card col-3 offset-1 mb-5" style="width: 18rem;" *ngFor="let item of latestExchangeRate.rates | keyvalue" >
-                            <div [ngClass]="'currency-flag-' + item.key|lowercase" class='currency-flag mt-2'></div>
-                            <div class="card-body">
-                              <h5 class="card-title">{{item.key}}</h5>
-                              <p class="card-text">{{item.value}}</p>
-                            </div>
-                          </div>
-             
+                <div class="form-group col-2 align-self-end">
+                    <button class="btn btn-primary" type="submit" (click) ="getSpecificCurrencyExchangeRate()">Submit</button>
                 </div>
-            </div>
+                <div class="form-group col-4 mt-4">
+                    <label for="usr">Filter By Date</label>
+                    <input type="text"
+                    placeholder="Datepicker"
+                    class="form-control"
+                    bsDatepicker
+                    (ngModelChange)="getSpecificDaysHistoricalData($event)"
+                    [bsConfig]="{ isAnimated: true }" 
+                    [(ngModel)] ="bsInlineRangeValue"
+                    name="startDate">
+                </div>
+               </div>
+                   <div class="row d-flex mt-5">
+                                <div class="card col-3 offset-1 mb-5 align-self-center">
+                                    <div [ngClass]="'currency-flag-' + baseCurrency|lowercase" class='currency-flag mt-2 currency-flag-xl'></div>
+                                    <div class="card-body">
+                                      <h5 class="card-title">Base Currency</h5>
+                                      <p class="card-text">{{baseCurrency}}</p>
+                                    </div>
+                    </div>
+                 
+                   </div>
+                   <div class="row">
+                                <div class="card col-3 offset-1 mb-5" style="width: 18rem;" *ngFor="let item of latestExchangeRate.rates | keyvalue" >
+                                    <div [ngClass]="'currency-flag-' + item.key|lowercase" class='currency-flag mt-2'></div>
+                                    <div class="card-body">
+                                      <h5 class="card-title">{{item.key}}</h5>
+                                      <p class="card-text">{{item.value}}</p>
+                                    </div>
+                                  </div>
+                 
+                   </div>
+          </div>
+           
         </ng-container>
     
     
@@ -171,145 +193,160 @@
     </ng-container>
 
   
-        <ng-container *ngIf="flag === 'OtherCurrencyConversion'">
+    <div class="container">
+        <div class="row mt-5">
+            <ng-container *ngIf="flag === 'OtherCurrencyConversion'">
         
-               <div class="align-self-center col-6 offset-4">
-                <select id="inputState" class="form-control" [(ngModel)]="conversionType">
-                    <option selected>Choose Conversion Type</option>
-                    <option *ngFor="let item of conversionTypeList" [value]="item">{{item}}</option>
-                  </select>
-               </div>
-               <div class="align-self-center col-4">
-                <button class="btn btn-primary" type="submit" (click) ="getOtherCurrencyExchangeRateConversion()">Submit</button>
-               </div>
-               
+                <div class="col-6 offset-4">
+                 <select id="inputState" class="form-control" [(ngModel)]="conversionType">
+                     <option selected [value]="">Choose Conversion Type</option>
+                     <option *ngFor="let item of conversionTypeList" [value]="item">{{item}}</option>
+                   </select>
+                </div>
+                <div class="col-2">
+                 <button class="btn btn-primary" type="submit" (click) ="setMenuItem(conversionType)">Submit</button>
+                </div>
                 
-               
-         
-        </ng-container>
+                
+          
+         </ng-container>
     
-    
-    <ng-container *ngIf="flag === 'wait'">
-        <div>
-            <div class="col-xs-12 col-12 col-md-4 form-group">
-                <label for="startDate">Start Date:</label>
-                <input type="text"
-                       placeholder="Datepicker"
-                       class="form-control"
-                       bsDatepicker
-                       [bsConfig]="{ isAnimated: true }" 
-                       [(ngModel)] ="bsInlineRangeValue"
-                       name="startDate">
-            </div>
-            <div class="col-xs-12 col-12 col-md-4 form-group">
-                <label for="endDate">End Date:</label>
-                <input type="text"
-                       placeholder="Datepicker"
-                       class="form-control"
-                       bsDatepicker
-                       [bsConfig]="{ isAnimated: true }" 
-                       [(ngModel)] ="bsEndValue"
-                       name="endDate">
-            </div>
-            <button type="button" (click) ="getHistoricalExchangeRate()">Get Historical Exchange Rate</button>
-            <div *ngIf="loading">Loading...</div>
-            <div *ngIf="errorMessage" class="alert alert-warning">
-                <strong>Warning!</strong> {{errorMessage | json}}
-            </div>
-        
-            <table class="table table-striped table-inverse table-responsive">
-                <thead class="thead-inverse">
-                    <tr>
-                        <th>Date</th>
-                        <th colspan="2">Data</th>
-                        
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of historicalExchangeRate.rates | keyvalue ">
-                            <td scope="row">{{item.key}}</td>
-                            <td>
-                                <tr *ngFor="let data of item.value | keyvalue ">
-                                    <td scope="row">{{data.key}}</td>
-                                    <td>{{data.value}}</td>
-                                </tr>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-            </table>
-            <pre>{{historicalExchangeRate | json}}</pre>
-            
         </div>
-        
-        
-        
-        
-        
-        <form [formGroup]="form" (ngSubmit) = "getOtherCurrencyExchangeRateConversion()">
-            <div class="form-group">
-                <h2>Other Currency Exchange Rate Conversion</h2>
-                <div class="col-xs-12 col-12 col-md-4 form-group">
-                    <label for="startDate">Start Date:</label>
-                    <input type="text"
-                           placeholder="Datepicker"
-                           class="form-control"
-                           bsDatepicker
-                           [bsConfig]="{ isAnimated: true }" 
-                           formControlName="startDate">
+        <div class="row mt-5">
+            <ng-container *ngIf="menuItem ==='SPECIFIC_CURRENCY_EXCHANGE_RATE'">
+                <div class="form-group col-3">
+                    <label for="inputState">Base Currency:</label>
+                    <select id="inputState" class="form-control" [(ngModel)]="baseCurrency">
+                      <option selected>Choose...</option>
+                      <option *ngFor="let item of countryCode " [value]="item">{{item}}</option>
+                    </select>
                 </div>
-                <div class="col-xs-12 col-12 col-md-4 form-group">
-                    <label for="endDate">End Date:</label>
-                    <input type="text"
-                           placeholder="Datepicker"
-                           class="form-control"
-                           bsDatepicker
-                           [bsConfig]="{ isAnimated: true }" 
-                           formControlName="endDate">
+                <div class="col-2">
+                    <button class="btn btn-primary" type="submit" (click) ="getSpecificCurrencyExchangeRate()">Submit</button>
                 </div>
-                <label for="countryCode">Country Code:</label>
-                <select formControlName='countryCode' class="form-countrol">
-                    <option disabled>Select Country Code</option>
-                    <option *ngFor="let item of countryCode ">{{item}}</option>
-                </select>
-            <div *ngIf="Forms.countryCode.touched && Forms.countryCode.invalid" class="alert alert-danger">
-                <div *ngIf="Forms.countryCode.errors.required">Country Code is required.</div>
-            </div>
-            </div>
-            <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Submit</button>
-            <table class="table table-striped table-inverse table-responsive">
-                <thead class="thead-inverse">
-                    <tr>
-                        <th>Date</th>
-                        <th colspan="2">Data</th>
-                        
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of historicalExchangeRate.rates | keyvalue ">
-                            <td scope="row">{{item.key}}</td>
-                            <td>
-                                <tr *ngFor="let data of item.value | keyvalue ">
-                                    <td scope="row">{{data.key}}</td>
-                                    <td>{{data.value}}</td>
+            </ng-container>
+            <ng-container *ngIf="menuItem === 'EXCHANGE_RATE_BY_CURRENCIES'">
+                <div>
+                    <div class="col-xs-12 col-12 col-md-4 form-group">
+                        <label for="startDate">Start Date:</label>
+                        <input type="text"
+                               placeholder="Datepicker"
+                               class="form-control"
+                               bsDatepicker
+                               [bsConfig]="{ isAnimated: true }" 
+                               [(ngModel)] ="bsInlineRangeValue"
+                               name="startDate">
+                    </div>
+                    <div class="col-xs-12 col-12 col-md-4 form-group">
+                        <label for="endDate">End Date:</label>
+                        <input type="text"
+                               placeholder="Datepicker"
+                               class="form-control"
+                               bsDatepicker
+                               [bsConfig]="{ isAnimated: true }" 
+                               [(ngModel)] ="bsEndValue"
+                               name="endDate">
+                    </div>
+                    <button type="button" (click) ="getHistoricalExchangeRate()">Get Historical Exchange Rate</button>
+                    <div *ngIf="loading">Loading...</div>
+                    <div *ngIf="errorMessage" class="alert alert-warning">
+                        <strong>Warning!</strong> {{errorMessage | json}}
+                    </div>
+                
+                    <table class="table table-striped table-inverse table-responsive">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Date</th>
+                                <th colspan="2">Data</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of historicalExchangeRate.rates | keyvalue ">
+                                    <td scope="row">{{item.key}}</td>
+                                    <td>
+                                        <tr *ngFor="let data of item.value | keyvalue ">
+                                            <td scope="row">{{data.key}}</td>
+                                            <td>{{data.value}}</td>
+                                        </tr>
+                                    </td>
                                 </tr>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-            </table>
-            <pre>{{historicalExchangeRate | json}}</pre>
-        </form>
-    </ng-container>
-   
+                                <tr>
+                                    <td scope="row"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                    </table>
+                    <pre>{{historicalExchangeRate | json}}</pre>
+                    
+                </div>
+                
+                
+                
+                
+                
+                <form [formGroup]="form" (ngSubmit) = "getOtherCurrencyExchangeRateConversion()">
+                    <div class="form-group">
+                        <h2>Other Currency Exchange Rate Conversion</h2>
+                        <div class="col-xs-12 col-12 col-md-4 form-group">
+                            <label for="startDate">Start Date:</label>
+                            <input type="text"
+                                   placeholder="Datepicker"
+                                   class="form-control"
+                                   bsDatepicker
+                                   [bsConfig]="{ isAnimated: true }" 
+                                   formControlName="startDate">
+                        </div>
+                        <div class="col-xs-12 col-12 col-md-4 form-group">
+                            <label for="endDate">End Date:</label>
+                            <input type="text"
+                                   placeholder="Datepicker"
+                                   class="form-control"
+                                   bsDatepicker
+                                   [bsConfig]="{ isAnimated: true }" 
+                                   formControlName="endDate">
+                        </div>
+                        <label for="countryCode">Country Code:</label>
+                        <select formControlName='countryCode' class="form-countrol">
+                            <option disabled>Select Country Code</option>
+                            <option *ngFor="let item of countryCode ">{{item}}</option>
+                        </select>
+                    <div *ngIf="Forms.countryCode.touched && Forms.countryCode.invalid" class="alert alert-danger">
+                        <div *ngIf="Forms.countryCode.errors.required">Country Code is required.</div>
+                    </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Submit</button>
+                    <table class="table table-striped table-inverse table-responsive">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Date</th>
+                                <th colspan="2">Data</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of historicalExchangeRate.rates | keyvalue ">
+                                    <td scope="row">{{item.key}}</td>
+                                    <td>
+                                        <tr *ngFor="let data of item.value | keyvalue ">
+                                            <td scope="row">{{data.key}}</td>
+                                            <td>{{data.value}}</td>
+                                        </tr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td scope="row"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                    </table>
+                    <pre>{{historicalExchangeRate | json}}</pre>
+                </form>
+            </ng-container>
+        </div>
+    </div>
 
 
 </div>
