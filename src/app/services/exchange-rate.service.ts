@@ -75,8 +75,8 @@ export class ExchangeRateService {
     }
 
       //Get specific - dates historical data
-  getSpecificDaysHistoricalData(date:string):Observable<HistoricalExchangeRate>{
-    return this.http.get<HistoricalExchangeRate>(this.exchangeRateUrl + date);
+  getSpecificDaysHistoricalData(date:string):Observable<ExchangeRate>{
+    return this.http.get<ExchangeRate>(this.exchangeRateUrl + date);
   }
 
 
