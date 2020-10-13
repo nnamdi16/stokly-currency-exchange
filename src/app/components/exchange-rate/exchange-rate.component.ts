@@ -11,7 +11,7 @@ import { ExchangeRateService } from './../../services/exchange-rate.service';
   styleUrls: ['./exchange-rate.component.css']
 })
 export class ExchangeRateComponent implements OnInit {
-  flag:string ='latestExchangeRate'
+  flag:string ='latestExchangeRate';
   base ='';
   date='';
   symbols='';
@@ -33,7 +33,7 @@ export class ExchangeRateComponent implements OnInit {
     startDate: new FormControl(),
     endDate: new FormControl()
   });
-  baseCurrency:string;
+  baseCurrency:string='EUR';
   conversionCurrency:string;
   valueToBeConverted:number;
   convertedExchangeResult:number;
