@@ -4,17 +4,29 @@
         <ng-container *ngIf="flag ==='latestExchangeRate'">
           <div>
             <div class="row">
-                <div class="form-group col-4 offset-1 mt-4 pl-0">
+                <div class="form-group col-3 offset-1 mt-4 pl-0">
                     <label for="inputState">Base Currency:</label>
                     <select id="inputState" class="form-control" [(ngModel)]="baseCurrency">
                       <option selected>Choose...</option>
                       <option *ngFor="let item of countryCode " [value]="item">{{item}}</option>
                     </select>
                 </div>
-                <div class="form-group col-2 align-self-end">
-                    <button class="btn btn-primary" type="submit" (click) ="getSpecificCurrencyExchangeRate()">Submit</button>
+                <div class="form-group col-3 mt-3 align-self-end">
+                    <label for="inputstate">Display Multiple Currency</label>
+                    <ng-multiselect-dropdown 
+                    [placeholder]="'Select Multiple Currency'"
+                    [data]="dropDownList"
+                    [(ngModel)]="selectedItems"
+                    [settings]="dropdownSettings"
+                    (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    >    
+                    </ng-multiselect-dropdown>
                 </div>
-                <div class="form-group col-4 mt-4">
+                <div class="form-group col-2 align-self-end">
+                    <button class="btn btn-primary" type="submit" (click) ="symbols.length>0 ? exchangeRateConversion():getSpecificCurrencyExchangeRate() ">Submit</button>
+                </div>
+                <div class="form-group col-3 mt-4">
                     <label for="usr">Filter By Date</label>
                     <input type="text"
                     placeholder="Datepicker"
@@ -25,6 +37,8 @@
                     [(ngModel)] ="bsInlineRangeValue"
                     name="startDate">
                 </div>
+                
+
                </div>
                    <div class="row d-flex mt-5">
                                 <div class="card col-3 offset-1 mb-5 align-self-center">
