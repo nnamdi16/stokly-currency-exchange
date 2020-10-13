@@ -19,7 +19,7 @@ export class ExchangeRateComponent implements OnInit {
   endDate:string = '';
   latest:string='latest';
   history:string='history';
-  latestExchangeRate : ExchangeRate;
+  latestExchangeRate : ExchangeRate; 
   historicalExchangeRate : HistoricalExchangeRate;
   loading:boolean = false;
   errorMessage:Error;
@@ -38,7 +38,9 @@ export class ExchangeRateComponent implements OnInit {
   valueToBeConverted:number;
   convertedExchangeResult:number;
   countryCode: string[] = [];
-
+  index : number = 0;
+  conversionType:string ='';
+  conversionTypeList=['EXCHANGE_RATE_BY_CURRENCIES','HISTORICAL_EXCHANGE_RATE_BY_CURRENCY','SPECIFIC_CURRENCY_EXCHANGE_RATE', 'EXCHANGE_RATE_BY_DATE', 'RECENT_EXCHANGE_RATE_BY_CURRENCY'];
 
   constructor(private exchangeRateService:ExchangeRateService, public datePipe: DatePipe) {
     // this.maxDate.setDate(this.maxDate.getDate() + 7);
@@ -51,9 +53,12 @@ export class ExchangeRateComponent implements OnInit {
     this.getLatestExchangeRate();
    
   }
+
   getMenuItem(event) {
     this.flag = event;
   }
+
+
 
   getLatestExchangeRate(){
     this.loading = true;
@@ -89,6 +94,7 @@ export class ExchangeRateComponent implements OnInit {
     this.exchangeRateService.getHistoricalExchangeRate(this.history,this.startDate,this.endDate)
       .subscribe(
         historicalExchangeRate => {
+        this.loading = false;
         console.log('Historical Exchange Rate',historicalExchangeRate);
         this.historicalExchangeRate = historicalExchangeRate;
         
@@ -112,19 +118,18 @@ export class ExchangeRateComponent implements OnInit {
   }
 
   getOtherCurrencyExchangeRateConversion(){
-    let [baseCurrency,startDateInput,endDateInput] = Object.values(this.form.value);
+    // let [baseCurrency,startDateInput,endDateInput] = Object.values(this.form.value);
+    let [startDateInput,endDateInput] = [this.bsInlineRangeValue,this.bsEndValue];
     this.startDate  = this.datePipe.transform(startDateInput, 'yyyy-MM-dd');
     this.endDate = this.datePipe.transform(endDateInput, 'yyyy-MM-dd');
-    this.base = baseCurrency;
     this.loading = true;
     this.errorMessage = new Error();
     
-    this.exchangeRateService.getOtherCurrencyExchangeRateConversion(this.history,this.startDate,this.endDate,this.base)
+    this.exchangeRateService.getOtherCurrencyExchangeRateConversion(this.history,this.startDate,this.endDate,this.baseCurrency)
       .subscribe(
         otherCurrencyExchangeRateConversion => {
           console.log(`Other currency Exchange Rate Conversion`, otherCurrencyExchangeRateConversion);
         this.historicalExchangeRate = otherCurrencyExchangeRateConversion;
-        
     },
       (error) => {
         console.log('Request failed with error');
