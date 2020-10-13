@@ -4,7 +4,7 @@
         <ng-container *ngIf="flag ==='latestExchangeRate'">
           <div>
             <div class="row">
-                <div class="form-group col-6 offset-1 mt-4 pl-0">
+                <div class="form-group col-4 offset-1 mt-4 pl-0">
                     <label for="inputState">Base Currency:</label>
                     <select id="inputState" class="form-control" [(ngModel)]="baseCurrency">
                       <option selected>Choose...</option>
@@ -13,6 +13,17 @@
                 </div>
                 <div class="form-group col-2 align-self-end">
                     <button class="btn btn-primary" type="submit" (click) ="getSpecificCurrencyExchangeRate()">Submit</button>
+                </div>
+                <div class="form-group col-4 mt-4">
+                    <label for="usr">Filter By Date</label>
+                    <input type="text"
+                    placeholder="Datepicker"
+                    class="form-control"
+                    bsDatepicker
+                    (ngModelChange)="getSpecificDaysHistoricalData($event)"
+                    [bsConfig]="{ isAnimated: true }" 
+                    [(ngModel)] ="bsInlineRangeValue"
+                    name="startDate">
                 </div>
                </div>
                    <div class="row d-flex mt-5">
