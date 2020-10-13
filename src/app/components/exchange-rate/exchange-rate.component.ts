@@ -106,7 +106,7 @@ export class ExchangeRateComponent implements OnInit {
   }
 
   getHistoricalExchangeRate(){
-    console.log(`Yea`,this.bsInlineRangeValue);
+    console.log(this.bsInlineRangeValue);
     let startDateInput = this.datePipe.transform(this.bsInlineRangeValue, 'yyyy-MM-dd');
     let endDateInput = this.datePipe.transform(this.bsEndValue, 'yyyy-MM-dd');
     this.startDate = startDateInput;
@@ -193,6 +193,10 @@ export class ExchangeRateComponent implements OnInit {
   getSelectedCurrenciesHistoricalExchangeRateData(){
     this.loading = true;
     this.errorMessage = new Error();
+    let startDateInput = this.datePipe.transform(this.bsInlineRangeValue, 'yyyy-MM-dd');
+    let endDateInput = this.datePipe.transform(this.bsEndValue, 'yyyy-MM-dd');
+    this.startDate = startDateInput;
+    this.endDate = endDateInput;
     this.exchangeRateService.getSelectedCurrenciesHistoricalExchangeRateData(this.history,this.startDate,this.endDate,this.symbols)
       .subscribe(
         selectedCurrenciesHistoricalExchangeRateData => {

@@ -103,7 +103,7 @@
     
          <ng-container *ngIf="flag === 'historicalExchangeRate'" >
             <div class="row mt-5">
-                <div class="form-group col-3">
+                <div class="form-group col-2">
                     <label for="inputState">Base Currency:</label>
                     <select id="inputState" class="form-control" [(ngModel)]="baseCurrency">
                       <option selected>Choose...</option>
@@ -111,6 +111,18 @@
                     </select>
                 </div>
                 <div class="form-group col-3">
+                    <label for="inputstate">Display Multiple Currency</label>
+                    <ng-multiselect-dropdown 
+                    [placeholder]="'Select Multiple Currency'"
+                    [data]="dropDownList"
+                    [(ngModel)]="selectedItems"
+                    [settings]="dropdownSettings"
+                    (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    >    
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="form-group col-2">
                     <label for="usr">Start Date:</label>
                     <input type="text"
                     placeholder="Datepicker"
@@ -120,7 +132,7 @@
                     [(ngModel)] ="bsInlineRangeValue"
                     name="startDate">
                 </div>
-                <div class="form-group col-3">
+                <div class="form-group col-2">
                     <label for="endDate">End Date:</label>
                     <input type="text"
                        placeholder="Datepicker"
@@ -130,8 +142,8 @@
                        [(ngModel)] ="bsEndValue"
                        name="endDate">
                 </div>
-               <div class="form-group col-3 align-self-end">
-                    <button class="btn btn-primary" type="submit" (click) ="baseCurrency === 'EUR'? getHistoricalExchangeRate():getOtherCurrencyExchangeRateConversion()">Submit</button>
+               <div class="form-group col-2 align-self-end">
+                    <button class="btn btn-primary" type="submit" (click) ="baseCurrency === 'EUR'? getHistoricalExchangeRate(): symbols.length>0 ? getSelectedCurrenciesHistoricalExchangeRateData(): getOtherCurrencyExchangeRateConversion()">Submit</button>
                </div>
             </div>
     
