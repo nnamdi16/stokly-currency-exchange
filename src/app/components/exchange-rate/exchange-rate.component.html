@@ -17,10 +17,10 @@
                </div>
                    <div class="row d-flex mt-5">
                                 <div class="card col-3 offset-1 mb-5 align-self-center">
-                                    <div class='currency-flag mt-2 currency-flag-eur currency-flag-xl'></div>
+                                    <div [ngClass]="'currency-flag-' + baseCurrency|lowercase" class='currency-flag mt-2 currency-flag-xl'></div>
                                     <div class="card-body">
                                       <h5 class="card-title">Base Currency</h5>
-                                      <p class="card-text">EUR</p>
+                                      <p class="card-text">{{baseCurrency}}</p>
                                     </div>
                     </div>
                  
