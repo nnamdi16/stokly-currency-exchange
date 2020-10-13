@@ -40,11 +40,9 @@ export class ExchangeRateService {
   }
 
   // Get selected Currencies Exchange Rate
-  getSelectedCurrenciesExchangeRateData(latest:string,symbols:string):Observable<ExchangeRate> {
+  getSelectedCurrenciesExchangeRateData(latest:string,symbols:string[]):Observable<ExchangeRate> {
     console.log(symbols);
-    let currencyArray = symbols.split(',')
-    console.log(currencyArray);
-    let currencies = currencyArray.join();
+    let currencies = symbols.join();
     console.log(currencies);
     let params = new HttpParams()
     .set('symbols',currencies);
@@ -52,11 +50,9 @@ export class ExchangeRateService {
   }
 
    // Get selected Currencies Historical Exchange Rate
-  getSelectedCurrenciesHistoricalExchangeRateData(history:string, startDate:string,endDate:string,symbols:string):Observable<HistoricalExchangeRate>{
+  getSelectedCurrenciesHistoricalExchangeRateData(history:string, startDate:string,endDate:string,symbols:string[]):Observable<HistoricalExchangeRate>{
     console.log(symbols);
-    let currencyArray = symbols.split(',')
-    console.log(currencyArray);
-    let currencies = currencyArray.join();
+    let currencies = symbols.join();
     console.log(currencies);
     let params = new HttpParams()
     .set('start_at',startDate)
