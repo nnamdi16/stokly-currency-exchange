@@ -11,7 +11,7 @@ import { ExchangeRateService } from './../../services/exchange-rate.service';
   styleUrls: ['./exchange-rate.component.css']
 })
 export class ExchangeRateComponent implements OnInit {
-  flag:string =''
+  flag:string ='latestExchangeRate'
   base ='';
   date='';
   symbols='';
@@ -33,14 +33,15 @@ export class ExchangeRateComponent implements OnInit {
     startDate: new FormControl(),
     endDate: new FormControl()
   });
-  baseCurrency:string ='';
-  conversionCurrency:string ='';
+  baseCurrency:string;
+  conversionCurrency:string;
   valueToBeConverted:number;
   convertedExchangeResult:number;
-  countryCode: string[] = [];
+  countryCode: string[] = []; 
   index : number = 0;
-  conversionType:string ='';
+  conversionType:string = '';
   conversionTypeList=['EXCHANGE_RATE_BY_CURRENCIES','HISTORICAL_EXCHANGE_RATE_BY_CURRENCY','SPECIFIC_CURRENCY_EXCHANGE_RATE', 'EXCHANGE_RATE_BY_DATE', 'RECENT_EXCHANGE_RATE_BY_CURRENCY'];
+  menuItem:string='';
 
   constructor(private exchangeRateService:ExchangeRateService, public datePipe: DatePipe) {
     // this.maxDate.setDate(this.maxDate.getDate() + 7);
@@ -54,10 +55,14 @@ export class ExchangeRateComponent implements OnInit {
    
   }
 
-  getMenuItem(event) {
+  getMenuItem(event:string) {
     this.flag = event;
   }
 
+  setMenuItem(event:string) {
+    this.menuItem = event;
+    console.log(this.menuItem);
+  }
 
 
   getLatestExchangeRate(){
