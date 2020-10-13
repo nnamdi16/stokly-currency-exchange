@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ExchangeRate } from 'src/app/models/ExchangeRate';
 import { HistoricalExchangeRate } from 'src/app/models/HistoricalExchangeRate';
 import { ExchangeRateService } from './../../services/exchange-rate.service';
@@ -14,7 +15,7 @@ export class ExchangeRateComponent implements OnInit {
   flag:string ='latestExchangeRate';
   base ='';
   date='';
-  symbols='';
+  symbols=[];
   startDate:string ='';
   endDate:string = '';
   latest:string='latest';
@@ -40,12 +41,23 @@ export class ExchangeRateComponent implements OnInit {
   countryCode: string[] = []; 
   index : number = 0;
   conversionType:string = '';
-  conversionTypeList=['EXCHANGE_RATE_BY_CURRENCIES','HISTORICAL_EXCHANGE_RATE_BY_CURRENCY','SPECIFIC_CURRENCY_EXCHANGE_RATE', 'EXCHANGE_RATE_BY_DATE', 'RECENT_EXCHANGE_RATE_BY_CURRENCY'];
   menuItem:string='';
+  dropDownList = [];
+  selectedItems = [];
+  dropdownSettings:IDropdownSettings={
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+  };
+  
+
 
   constructor(private exchangeRateService:ExchangeRateService, public datePipe: DatePipe) {
-    // this.maxDate.setDate(this.maxDate.getDate() + 7);
-    // this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
+
    }
 
   ngOnInit(): void {
@@ -54,18 +66,22 @@ export class ExchangeRateComponent implements OnInit {
     this.getLatestExchangeRate();
    
   }
-
+  
   getMenuItem(event:string) {
     this.flag = event;
   }
 
-  setMenuItem(event:string) {
-    this.menuItem = event;
-    console.log(this.menuItem);
+  
+  onItemSelect(item: any) {
+    this.symbols.push(item);
+    console.log(this.symbols)
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
 
-
   getLatestExchangeRate(){
+    console.log(this.symbols);
     this.loading = true;
     this.errorMessage = new Error();
     this.exchangeRateService.getLatestExchangeRate(this.latest)
@@ -73,6 +89,7 @@ export class ExchangeRateComponent implements OnInit {
         console.log('Latest Exchange Rate',latestExchangeRate);
         this.latestExchangeRate = latestExchangeRate;
         this.countryCode = Object.keys(latestExchangeRate.rates);
+        this.dropDownList = this.countryCode;
         
         
       },
@@ -123,7 +140,6 @@ export class ExchangeRateComponent implements OnInit {
   }
 
   getOtherCurrencyExchangeRateConversion(){
-    // let [baseCurrency,startDateInput,endDateInput] = Object.values(this.form.value);
     let [startDateInput,endDateInput] = [this.bsInlineRangeValue,this.bsEndValue];
     this.startDate  = this.datePipe.transform(startDateInput, 'yyyy-MM-dd');
     this.endDate = this.datePipe.transform(endDateInput, 'yyyy-MM-dd');
@@ -199,6 +215,7 @@ export class ExchangeRateComponent implements OnInit {
   }
 
   getSpecificCurrencyExchangeRate(){
+    console.log(this.symbols.length);
     console.log(this.baseCurrency,this.conversionCurrency);
     this.loading = true;
     this.errorMessage = new Error();
@@ -268,6 +285,7 @@ export class ExchangeRateComponent implements OnInit {
         otherCurrencyExchangeRateConversion => {
         console.log(`Selected Currencies Exchange Rate`, otherCurrencyExchangeRateConversion);
         this.latestExchangeRate = otherCurrencyExchangeRateConversion;
+        this.symbols=[];
         
     },
       (error) => {
